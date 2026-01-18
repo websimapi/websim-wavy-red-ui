@@ -10,6 +10,16 @@ const REPEATS = 4;
 const PATTERN_LENGTH = ASSETS.length;
 const TOTAL_COLUMNS = PATTERN_LENGTH * REPEATS;
 
+function updateTileSize() {
+    // We calculate the exact pixel width of a column to ensure the 
+    // background-position animation loops perfectly without jitter.
+    const headerPattern = document.getElementById('header-pattern');
+    if (headerPattern) {
+        const colWidth = headerPattern.offsetWidth / TOTAL_COLUMNS;
+        document.documentElement.style.setProperty('--tile-size', `${colWidth}px`);
+    }
+}
+
 function createPatternColumns(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -18,14 +28,12 @@ function createPatternColumns(containerId) {
         const col = document.createElement('div');
         col.classList.add('col');
         
-        // Determine which texture to use based on index
         const assetIndex = i % PATTERN_LENGTH;
         const assetUrl = ASSETS[assetIndex];
         
         col.style.backgroundImage = `url(${assetUrl})`;
-        
-        // Stagger animation slightly for dynamic feel
-        col.style.animationDelay = `${i * -0.5}s`;
+        // Stagger animation slightly for dynamic feel, using a larger spread
+        col.style.animationDelay = `${i * -0.75}s`;
         
         container.appendChild(col);
     }
@@ -34,4 +42,7 @@ function createPatternColumns(containerId) {
 document.addEventListener('DOMContentLoaded', () => {
     createPatternColumns('header-pattern');
     createPatternColumns('footer-pattern');
+    
+    updateTileSize();
+    window.addEventListener('resize', updateTileSize);
 });

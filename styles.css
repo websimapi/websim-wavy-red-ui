@@ -39,20 +39,22 @@ main {
 }
 
 .col {
-    flex: 1; /* Equal width for all columns (approx 5vw each) */
+    flex: 1; 
     height: 100%;
     background-repeat: repeat-y;
-    background-position: center top;
-    /* Use 100% width. Since icons are square, tile height matches column width (5vw) */
+    /* Use 0 instead of center to avoid sub-pixel centering jitter */
+    background-position: 0 0;
     background-size: 100% auto; 
-    /* Add a subtle animation to the background pattern position for dynamic feel */
-    animation: scrollPattern 10s linear infinite;
+    /* Slowed down slightly for smoother look, added will-change for optimization */
+    animation: scrollPattern 15s linear infinite;
+    will-change: background-position;
+    transform: translateZ(0);
 }
 
 @keyframes scrollPattern {
-    /* 5vw corresponds to the exact width/height of one square tile in a 20-column layout */
-    from { background-position: center 0; }
-    to { background-position: center 5vw; }
+    /* Move exactly one tile height (which equals column width since assets are square) */
+    from { background-position: 0 0; }
+    to { background-position: 0 var(--tile-size, 5vw); }
 }
 
 /* Wave Dividers */
