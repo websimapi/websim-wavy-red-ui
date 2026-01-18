@@ -1,0 +1,90 @@
+:root {
+    --red-bg: #C62828; /* Deep red */
+    --beige-bg: #F5F5DC; /* Beige */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--beige-bg);
+    overflow: hidden;
+    font-family: sans-serif;
+}
+
+header, footer {
+    position: relative;
+    background-color: var(--red-bg);
+    height: 30vh; /* Adjust height to fit design */
+    width: 100%;
+    /* Ensure pattern doesn't overflow outside the red box visually before wave covers it */
+    overflow: hidden; 
+}
+
+main {
+    flex-grow: 1;
+    background-color: var(--beige-bg);
+    position: relative;
+    z-index: 1;
+}
+
+.pattern-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+.col {
+    flex: 1; /* Equal width for all columns */
+    height: 100%;
+    background-repeat: repeat-y;
+    background-position: center top;
+    background-size: 80%; /* Ensure icon fits within the thin column */
+    /* Add a subtle animation to the background pattern position for dynamic feel */
+    animation: scrollPattern 20s linear infinite;
+}
+
+@keyframes scrollPattern {
+    from { background-position: center 0; }
+    to { background-position: center 100px; }
+}
+
+/* Wave Dividers */
+.wave-divider {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 60px; /* Height of the wave overlap */
+    z-index: 5;
+    pointer-events: none;
+    line-height: 0;
+}
+
+.wave-divider svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: var(--beige-bg);
+}
+
+.bottom-wave {
+    bottom: 0;
+}
+
+.top-wave {
+    top: 0;
+}
+
+/* Specific styling for header to make sure wave covers the bottom edge */
+#app-header .bottom-wave {
+    transform: translateY(1px); /* Fix sub-pixel rendering gaps */
+}
+
+/* Specific styling for footer to make sure wave covers the top edge */
+#app-footer .top-wave {
+    transform: translateY(-1px); /* Fix sub-pixel rendering gaps */
+}
